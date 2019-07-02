@@ -252,13 +252,20 @@ public class MongoDataConverter {
             builder.field(key, Schema.OPTIONAL_INT32_SCHEMA);
             break;
         case TIMESTAMP:
-            builder.field(key, org.apache.kafka.connect.data.Timestamp.SCHEMA);
+            // INT32 corresponds with Date?
+            builder.field(key, org.apache.kafka.connect.data.Date.SCHEMA);
             break;
 
         case INT64:
             builder.field(key, Schema.OPTIONAL_INT64_SCHEMA);
             break;
         case DATE_TIME:
+            // INT64 corresponds with Timestamp?
+            // BSON Date is a 64-bit integer that represents the number of milliseconds since the Unix epoch (Jan 1, 1970).
+            // see https://avro.apache.org/docs/1.8.0/spec.html#Logical+Types
+            // Timestamp (millisecond precision)
+            // The timestamp-millis logical type represents an instant on the global timeline, independent of a particular time zone or calendar, with a precision of one millisecond.
+            // A timestamp-millis logical type annotates an Avro long, where the long stores the number of milliseconds from the unix epoch, 1 January 1970 00:00:00.000 UTC.
             builder.field(key, org.apache.kafka.connect.data.Timestamp.SCHEMA);
             break;
 
@@ -336,13 +343,18 @@ public class MongoDataConverter {
                             break;
 
                         case INT32:
-                        case TIMESTAMP:
                             builder.field(key, SchemaBuilder.array(Schema.OPTIONAL_INT32_SCHEMA).optional().build());
                             break;
+                        case TIMESTAMP:
+                            // INT32 corresponds with Date?
+                            builder.field(key, org.apache.kafka.connect.data.Date.SCHEMA);
 
                         case INT64:
-                        case DATE_TIME:
                             builder.field(key, SchemaBuilder.array(Schema.OPTIONAL_INT64_SCHEMA).optional().build());
+                            break;
+                        case DATE_TIME:
+                            // INT64 corresponds with Timestamp?
+                            builder.field(key, org.apache.kafka.connect.data.Timestamp.SCHEMA);
                             break;
 
                         case BOOLEAN:
