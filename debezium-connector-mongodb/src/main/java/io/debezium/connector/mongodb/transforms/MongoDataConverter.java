@@ -5,10 +5,7 @@
  */
 package io.debezium.connector.mongodb.transforms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.apache.kafka.connect.data.Schema;
@@ -86,7 +83,7 @@ public class MongoDataConverter {
             break;
 
         case DATE_TIME:
-            colValue = keyvalueforStruct.getValue().asDateTime().getValue();
+            colValue = new java.util.Date(keyvalueforStruct.getValue().asDateTime().getValue());
             break;
 
         case JAVASCRIPT:
@@ -176,13 +173,15 @@ public class MongoDataConverter {
                             long temp = arrValue.asInt64().getValue();
                             list.add(temp);
                         } else if (arrValue.getBsonType() == BsonType.DATE_TIME && valueType == BsonType.DATE_TIME) {
-                            long temp = arrValue.asInt64().getValue();
+                            //long temp = arrValue.asInt64().getValue();
+                            Date temp = new Date(arrValue.asInt64().getValue());
                             list.add(temp);
                         } else if (arrValue.getBsonType() == BsonType.DECIMAL128 && valueType == BsonType.DECIMAL128) {
                             String temp = arrValue.asDecimal128().getValue().toString();
                             list.add(temp);
                         } else if (arrValue.getBsonType() == BsonType.TIMESTAMP && valueType == BsonType.TIMESTAMP) {
-                            int temp = arrValue.asInt32().getValue();
+                            //int temp = arrValue.asInt32().getValue();
+                            Date temp = new Date(arrValue.asInt32().getValue());
                             list.add(temp);
                         } else if (arrValue.getBsonType() == BsonType.BOOLEAN && valueType == BsonType.BOOLEAN) {
                             boolean temp = arrValue.asBoolean().getValue();
