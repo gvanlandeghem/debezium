@@ -249,13 +249,17 @@ public class MongoDataConverter {
             break;
 
         case INT32:
-        case TIMESTAMP:
             builder.field(key, Schema.OPTIONAL_INT32_SCHEMA);
+            break;
+        case TIMESTAMP:
+            builder.field(key, org.apache.kafka.connect.data.Timestamp.SCHEMA);
             break;
 
         case INT64:
-        case DATE_TIME:
             builder.field(key, Schema.OPTIONAL_INT64_SCHEMA);
+            break;
+        case DATE_TIME:
+            builder.field(key, org.apache.kafka.connect.data.Timestamp.SCHEMA);
             break;
 
         case BOOLEAN:
